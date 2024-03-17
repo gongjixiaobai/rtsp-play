@@ -1,5 +1,21 @@
-测试
+# 依赖
+- node.js
+- ffmpeg
+- jsmpeg
+# 测试
+```shell
+# 安装依赖
+npm install
+# 启动服务
+node main.js
+```
+ node main.js
 
+## html代码样例
+
+```html
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,3 +57,30 @@ function createPlayer() {
   // 主动播放
   player.play();
 }
+
+document.addEventListener("visibilitychange", handleVisibilityChange, false);
+
+window.addEventListener("beforeunload", function () {
+  // 停止并销毁播放器实例，以确保正确的清理
+  if (player !== null) {
+    player.pause();
+    player.destroy();
+    player = null;
+  }
+});
+
+function updatePlayer() {
+  if (!paused && player !== null) {
+    player.update(Date.now());
+  }
+  requestAnimationFrame(updatePlayer);
+}
+
+requestAnimationFrame(updatePlayer);
+
+// 一进入页面就播放视频
+createPlayer();
+</script>
+</html>
+
+```
